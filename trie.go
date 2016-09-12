@@ -97,7 +97,7 @@ func (trie *Trie) Match(v string) (ok bool, value interface{}, params map[string
 		isMatched := false
 		for _, node := range t.Children {
 			if ok, params := node.Pattern.Match(part); ok {
-				if i == length-1 && !node.IsPatternEnding() {
+				if i == length-1 && !node.isPatternEnding() {
 					continue
 				}
 
@@ -132,6 +132,8 @@ finish:
 	return true, t.Value, m
 }
 
+// Get allows you use the origin pattern string which was used in Put
+// to get the value that maps to it.
 func (trie *Trie) Get(v string) (ok bool, value interface{}) {
 	parts := trie.splitPattern(v)
 	t := trie.Root
@@ -172,6 +174,6 @@ func NewNode(str ...string) *Node {
 	return node
 }
 
-func (node *Node) IsPatternEnding() bool {
+func (node *Node) isPatternEnding() bool {
 	return node.PatternEnding
 }
