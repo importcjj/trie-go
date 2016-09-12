@@ -7,30 +7,38 @@ import (
 	"github.com/importcjj/trie.go/router"
 )
 
-var r = router.New()
+func Helloworld(ctx *router.Context) {
+	ctx.WriteString("hello, world!")
+}
 
-var HelloWorld = &router.Handler{
+func ParamHandler(ctx *router.Context) {
+	username := ctx.ParamString("username")
+	text := fmt.Sprintf("hi, %s", username)
+	ctx.WriteString(text)
+}
+
+var PageResource = &router.Handler{
 	OnGet: func(ctx *router.Context) {
-		ctx.WriteString("Hello, world!")
+		filepath := ctx.ParamString("filepath")
+		text := fmt.Sprintf("Get page %s", filepath)
+		ctx.WriteString(text)
+	},
+
+	OnPost: func(ctx *router.Context) {
+		filepath := ctx.ParamString("filepath")
+		text := fmt.Sprintf("Post page %s", filepath)
+		ctx.WriteString(text)
 	},
 }
 
+var r = router.New()
+
 func init() {
-	r.Router("/helloworld", HelloWorld)
-	r.Get("/hi/<username>", func(ctx *router.Context) {
-		username := ctx.ParamString("username")
-		text := fmt.Sprintf("Hi, %s", username)
-		ctx.WriteString(text)
-	})
-
-	r.Get("/file", func(ctx *router.Context) {
-		ctx.WriteString("this is file")
-	})
-
-	r.Get("/file/<filename:*>", func(ctx *router.Context) {
-		filename := ctx.ParamString("filename")
-		ctx.WriteString(filename)
-	})
+	r.Get("/hello/world", Helloworld)
+	r.Get("/hi/<username:str>", ParamHandler)
+	// restful api style, this pattern can match such as
+	// "/page/hi.html" "/page/static/inde.html" eta.
+	r.Router("/page/<filepath:*>", PageResource)
 }
 
 func main() {
