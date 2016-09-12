@@ -100,6 +100,17 @@ func (trie *Trie) Match(v string) (ok bool, value interface{}, params map[string
 				if i == length-1 && !node.IsPatternEnding() {
 					continue
 				}
+
+				if node.Pattern.MatchEverything() {
+					for k, v := range params {
+						seg := []string{v}
+						params[k] = strings.Join(append(seg, parts[i+1:]...), defalutDelimeter)
+					}
+					paramMaps = append(paramMaps, params)
+					t = node
+					goto finish
+				}
+
 				paramMaps = append(paramMaps, params)
 				t = node
 				isMatched = true
@@ -110,6 +121,7 @@ func (trie *Trie) Match(v string) (ok bool, value interface{}, params map[string
 			return false, nil, nil
 		}
 	}
+finish:
 	var m = make(map[string]string)
 	for _, params := range paramMaps {
 		for k, v := range params {

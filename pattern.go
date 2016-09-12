@@ -10,11 +10,12 @@ const (
 	DefaultPatternDelimeter = ":"
 )
 
-var triePattern = regexp.MustCompile(`<(?P<pattern>\w+?:*\w+?)>`)
+var triePattern = regexp.MustCompile(`<(?P<pattern>\w+?:*[\w|\*]+?)>`)
 
 func init() {
 	defaultPatternStore.Register("str", `\w+`)
 	defaultPatternStore.Register("int", `\d+`)
+	defaultPatternStore.Register("*", `.+`)
 	defaultPatternStore.DefaultPattern = func() string {
 		return `(\w+)`
 	}
@@ -51,6 +52,7 @@ var defaultPatternStore = NewPatternStore()
 type Pattern struct {
 	pattern         *regexp.Regexp
 	params          []string
+	patternName     string
 	patternStr      string
 	regexpStr       string
 	IsRegexpPattern bool
@@ -58,28 +60,34 @@ type Pattern struct {
 
 func NewPattern(str string) *Pattern {
 	var params []string
+	var subPatternCount int
+	var subPatternName string
 	regexpPatternStr := triePattern.ReplaceAllStringFunc(str, func(substr string) string {
-		// if str == substr {
-		// 	return str
-		// }
 		p := strings.Split(strings.Trim(substr, "<>"), DefaultPatternDelimeter)
 		param := p[0]
 		params = append(params, param)
-		patternName := ""
+		subPatternName = ""
 		if len(p) > 1 {
-			patternName = p[1]
+			subPatternName = p[1]
 		}
-		return defaultPatternStore.GetPattern(patternName)
+		subPatternCount++
+		return defaultPatternStore.GetPattern(subPatternName)
 	})
+
 	var pattern = regexp.MustCompile(regexpPatternStr)
 	var isRegexpPattern = (str != regexpPatternStr)
-	return &Pattern{
+	p := &Pattern{
 		pattern:         pattern,
 		params:          params,
 		patternStr:      str,
 		regexpStr:       regexpPatternStr,
 		IsRegexpPattern: isRegexpPattern,
 	}
+	if subPatternCount == 1 && subPatternName == "*" {
+		p.patternName = subPatternName
+	}
+
+	return p
 }
 
 func (pattern *Pattern) Match(str string) (bool, map[string]string) {
@@ -99,4 +107,8 @@ func (pattern *Pattern) Match(str string) (bool, map[string]string) {
 
 func (pattern *Pattern) EqualStr(str string) bool {
 	return str == pattern.patternStr
+}
+
+func (pattern *Pattern) MatchEverything() bool {
+	return pattern.patternName == "*"
 }

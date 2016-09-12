@@ -22,6 +22,15 @@ func init() {
 		text := fmt.Sprintf("Hi, %s", username)
 		ctx.WriteString(text)
 	})
+
+	r.Get("/file", func(ctx *router.Context) {
+		ctx.WriteString("this is file")
+	})
+
+	r.Get("/file/<filename:*>", func(ctx *router.Context) {
+		filename := ctx.ParamString("filename")
+		ctx.WriteString(filename)
+	})
 }
 
 func main() {

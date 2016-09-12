@@ -26,3 +26,40 @@ ok, m, value = tree.Match("/123")
 ok, m, value = tree.Match("/hi")
 # ok is false
 ```
+
+## Examples
+
+#### A HTTP router base on it.
+
+```
+func Helloworld(ctx *router.Context) {
+    ctx.WriteString("hello, world!")
+}
+
+func ParamHandler(ctx *router.Context) {
+    username := ctx.ParamString("username")
+    text := fmt.Sprintf("hi, %s", username)
+    ctx.WriterString(text)
+}
+
+var PageResource = &router.Handler{
+    OnGet: func(ctx *router.Context) {
+        filepath := ctx.ParamString("filename")
+        text := fmt.Sprintf("Get page %s", filepath)
+        ctx.WriteString(text)
+    },
+
+    OnPost: func(ctx *router.Context) {
+        filepath := ctx.ParamString("filename")
+        text := fmt.Sprintf("Post page %s", filepath)
+        ctx.WriteString(text)
+    },
+}
+
+r := router.New()
+r.Get("/hello/world", HelloWorld)
+r.Get("/hi/<username:str>", ParamHandler)
+# restfule api style, this pattern can match such as
+# "/page/hi.html" "/page/static/inde.html" eta.
+r.Router("/page/<filepath:*>", PageResource)
+```
