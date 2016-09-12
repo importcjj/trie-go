@@ -1,5 +1,6 @@
 Trie.go
 =======
+[![GoDoc](https://godoc.org/github.com/importcjj/trie.go?status.svg)](https://godoc.org/github.com/importcjj/trie.go)
 
 ## Usage
 
