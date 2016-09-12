@@ -31,7 +31,7 @@ ok, m, value = tree.Match("/hi")
 
 #### A HTTP router base on it.
 
-```
+```go
 func Helloworld(ctx *router.Context) {
     ctx.WriteString("hello, world!")
 }
@@ -59,7 +59,7 @@ var PageResource = &router.Handler{
 r := router.New()
 r.Get("/hello/world", HelloWorld)
 r.Get("/hi/<username:str>", ParamHandler)
-# restfule api style, this pattern can match such as
-# "/page/hi.html" "/page/static/inde.html" eta.
+// restful api style, this pattern can match such as
+// "/page/hi.html" "/page/static/inde.html" eta.
 r.Router("/page/<filepath:*>", PageResource)
 ```
