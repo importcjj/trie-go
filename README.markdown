@@ -12,19 +12,24 @@ tree.Put("/<id:int>", "name pattern")
 // Has(pattern string) bool
 duplicated := tree.Has("/")
 
-// Match(key string) bool, map[string]interface{}, interface{}
-ok, m, value := tree.Match("/")
+// Match(key string) bool, result
+ok, result := tree.Match("/")
 // ok is true
-// m is nil
-// value.(string) is "root"
+// result.Params is nil
+// result.Value.(string) is "root"
 
-ok, m, value = tree.Match("/123")
+ok, result = tree.Match("/123")
 // ok is true
-// m is {"id": 123}
-// value.(string) is "name pattern"
+// result.Params is {"id": 123}
+// result.Value.(string) is "name pattern"
 
-ok, m, value = tree.Match("/hi")
+ok, result = tree.Match("/hi")
 // ok is false
+
+ok, node := tree.GetNode("/<id:int>")
+if ok {
+	node.Data["put_data"] = "hello"
+}
 ```
 
 ## Examples

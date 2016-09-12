@@ -314,6 +314,7 @@ func (router *Router) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 // Context store the context of a request.
 type Context struct {
 	Params         map[string]string
+	Data           map[string]interface{}
 	ResponseWriter http.ResponseWriter
 	Request        *http.Request
 }
@@ -322,6 +323,7 @@ type Context struct {
 func NewContent(rw http.ResponseWriter, r *http.Request) *Context {
 	return &Context{
 		ResponseWriter: rw,
+		Data:           make(map[string]interface{}),
 		Request:        r,
 	}
 }
