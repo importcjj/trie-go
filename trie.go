@@ -144,7 +144,7 @@ func (trie *Trie) GetNode(v string) (ok bool, node *Node) {
 	for _, part := range parts {
 		isMatched := false
 		for _, node := range t.Children {
-			if ok := node.Pattern.EqualStr(part); ok {
+			if ok := node.Pattern.EqualToStr(part); ok {
 				t = node
 				isMatched = true
 				break
