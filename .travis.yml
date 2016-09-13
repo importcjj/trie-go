@@ -7,6 +7,6 @@ go:
     - 1.7
 
 install:
-    - go get github.com/importcjj/trie.go
+    - go get github.com/importcjj/trie-go
 
 script: go test ./...

@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/importcjj/trie.go"
+	"github.com/importcjj/trie-go"
 )
 
 // HTTP methods

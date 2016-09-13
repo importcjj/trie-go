@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/importcjj/trie.go/router"
+	"github.com/importcjj/trie-go/router"
 )
 
 func Helloworld(ctx *router.Context) {
