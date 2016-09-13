@@ -1,6 +1,7 @@
 Trie.go
 =======
 [![GoDoc](https://godoc.org/github.com/importcjj/trie.go?status.svg)](https://godoc.org/github.com/importcjj/trie.go)
+[![Build Status](https://travis-ci.org/importcjj/trie.go.svg?branch=master)](https://travis-ci.org/importcjj/trie.go)
 
 ## Usage
 
