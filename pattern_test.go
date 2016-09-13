@@ -5,8 +5,10 @@ import (
 	"testing"
 )
 
-func HandleError(t *testing.T, err error) {
-	t.Error(err)
+func handleError(t *testing.T, err error) {
+	if err != nil {
+		t.Error(err)
+	}
 }
 
 func TestNewPattern(t *testing.T) {
@@ -31,7 +33,7 @@ func TestNewPattern(t *testing.T) {
 func TestRegisterPattern(t *testing.T) {
 	r := `^((\\+86)|(86))?(1(([35][0-9])|[8][0-9]|[7][06789]|[4][579]))\\d{8}$`
 	err := RegisterPattern("mobile", r)
-	HandleError(t, err)
+	handleError(t, err)
 
 	s := "a.b.<num:mobile>"
 	pattern := NewPattern(s)
