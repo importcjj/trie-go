@@ -85,7 +85,7 @@ func (router *Router) Get(pattern string, handlefunc func(*Context)) {
 func (router *Router) Post(pattern string, handlefunc func(*Context)) {
 	exist, node := router.trie.GetNode(pattern)
 	var handler HandlerInterface
-	if !exist {
+	if exist {
 		h := node.Value
 		handler = h.(HandlerInterface)
 	} else {
@@ -99,7 +99,7 @@ func (router *Router) Post(pattern string, handlefunc func(*Context)) {
 func (router *Router) Put(pattern string, handlefunc func(*Context)) {
 	exist, node := router.trie.GetNode(pattern)
 	var handler HandlerInterface
-	if !exist {
+	if exist {
 		h := node.Value
 		handler = h.(HandlerInterface)
 	} else {
@@ -113,7 +113,7 @@ func (router *Router) Put(pattern string, handlefunc func(*Context)) {
 func (router *Router) Patch(pattern string, handlefunc func(*Context)) {
 	exist, node := router.trie.GetNode(pattern)
 	var handler HandlerInterface
-	if !exist {
+	if exist {
 		h := node.Value
 		handler = h.(HandlerInterface)
 	} else {
@@ -127,7 +127,7 @@ func (router *Router) Patch(pattern string, handlefunc func(*Context)) {
 func (router *Router) Delete(pattern string, handlefunc func(*Context)) {
 	exist, node := router.trie.GetNode(pattern)
 	var handler HandlerInterface
-	if !exist {
+	if exist {
 		h := node.Value
 		handler = h.(HandlerInterface)
 	} else {
