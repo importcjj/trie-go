@@ -1,6 +1,7 @@
 package router
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -259,6 +260,16 @@ func (router *Router) mapMidwares(context *Context, midwares ...func(*Context)) 
 	for _, midware := range midwares {
 		midware(context)
 	}
+}
+
+// ServeDir Serve static files.
+func (router *Router) ServeDir(dirname string) {
+	prefix := fmt.Sprintf("/%s", dirname)
+	pattern := fmt.Sprintf("/%s/<filename:*>", dirname)
+	fileserver := http.StripPrefix(prefix, http.FileServer(http.Dir(dirname)))
+	router.Get(pattern, func(ctx *Context) {
+		fileserver.ServeHTTP(ctx.ResponseWriter, ctx.Request)
+	})
 }
 
 func (router *Router) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
