@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/importcjj/trie.go/router"
+	"github.com/importcjj/trie-go/router"
 )
 
 func Helloworld(ctx *router.Context) {
